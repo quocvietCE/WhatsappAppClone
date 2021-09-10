@@ -8,6 +8,7 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import NotFoundScreen from '../screens/NotFoundScreen';
 import ChatRoomScreen from '../screens/ChatRoomScreen';
 import ContactsScreen from '../screens/ContactsScreen';
 import MainTab from './MainTabNavigator';
@@ -27,6 +28,7 @@ export type RootStackParamType = {
   Root: undefined;
   ChatRoom: undefined;
   Contacts: undefined;
+  NotFound: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamType>();
@@ -98,6 +100,11 @@ const RootRouter = ({ colorScheme }: { colorScheme: ColorSchemeName }) => (
             </View>
           ),
         })}
+      />
+      <RootStack.Screen
+        name="NotFound"
+        component={NotFoundScreen}
+        options={{ title: 'Oops!' }}
       />
       <RootStack.Screen name="Contacts" component={ContactsScreen} />
     </RootStack.Navigator>
