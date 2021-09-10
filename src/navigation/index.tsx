@@ -1,7 +1,11 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ColorSchemeName, Text } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import ChatRoomScreen from '../screens/ChatRoomScreen';
@@ -27,17 +31,15 @@ export type RootStackParamType = {
 
 const RootStack = createNativeStackNavigator<RootStackParamType>();
 
-const RootRouter = () => (
-  <NavigationContainer>
+const RootRouter = ({ colorScheme }: { colorScheme: ColorSchemeName }) => (
+  <NavigationContainer
+    theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <RootStack.Navigator
       screenOptions={{
         headerStyle: {
           backgroundColor: Colors.light.tint,
-          shadowOpacity: 0,
-          elevation: 0,
         },
         headerTintColor: Colors.light.background,
-        headerTitleAlign: 'left',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -55,13 +57,29 @@ const RootRouter = () => (
       <RootStack.Screen
         name="Root"
         component={MainTab}
-        options={{ title: 'WhatsApp' }}
+        options={{
+          title: '',
+          headerTitleAlign: 'left',
+          headerLeft: () => {
+            return (
+              <Text
+                style={{
+                  color: Colors.light.background,
+                  fontWeight: 'bold',
+                  fontSize: 18,
+                }}>
+                WhatsApp
+              </Text>
+            );
+          },
+          headerShadowVisible: false,
+        }}
       />
       <RootStack.Screen
         name="ChatRoom"
         component={ChatRoomScreen}
         options={({ route }) => ({
-          title: route.params.name,
+          // title: route.params.name,
           headerRight: () => (
             <View
               style={{

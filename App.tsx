@@ -7,10 +7,17 @@
  */
 
 import React from 'react';
-import RootRouter from './src/navigation';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import useColorScheme from './src/hooks/useColorScheme';
+import Navigation from './src/navigation';
 
 const App = () => {
-  return <RootRouter />;
+  const colorScheme = useColorScheme();
+  return (
+    <SafeAreaProvider>
+      <Navigation colorScheme={colorScheme} />
+    </SafeAreaProvider>
+  );
 };
 
 export default App;
