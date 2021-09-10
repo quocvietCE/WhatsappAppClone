@@ -11,6 +11,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useColorScheme from './src/hooks/useColorScheme';
 import Navigation from './src/navigation';
 
+import { withAuthenticator } from 'aws-amplify-react-native';
+import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
+import config from './src/aws-exports';
+Amplify.configure(config);
+
 const App = () => {
   const colorScheme = useColorScheme();
   return (
@@ -20,4 +25,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withAuthenticator(App);
