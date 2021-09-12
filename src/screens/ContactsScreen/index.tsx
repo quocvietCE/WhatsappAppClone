@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-// import { API, graphqlOperation } from 'aws-amplify';\
+import { API, graphqlOperation } from 'aws-amplify';
 // import { View } from '../components/Themed';
 import ContactListItem from '../../components/ContactListItem';
 import dataMockContact from '../../constants/Users';
-
-// import { listUsers } from '../src/graphql/queries';
+import { listUsers } from '../../graphql/queries';
 
 const ContactsScreen = () => {
   const [users, setUsers] = useState(dataMockContact);
 
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const usersData = await API.graphql(graphqlOperation(listUsers));
-  //       setUsers(usersData.data.listUsers.items);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
-  //   fetchUsers();
-  // }, []);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const usersData = await API.graphql(graphqlOperation(listUsers));
+        console.log('usersData: ', usersData);
+        setUsers(usersData.data.listUsers.items);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   return (
     <View style={styles.container}>

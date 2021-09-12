@@ -16,7 +16,7 @@ import { createUser } from './src/graphql/mutations';
 
 import { withAuthenticator } from 'aws-amplify-react-native';
 import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
-import { GraphQLOptions, GraphQLResult } from '@aws-amplify/api-graphql';
+import { GraphQLResult } from '@aws-amplify/api-graphql';
 import config from './src/aws-exports';
 
 import { User } from './src/API';
