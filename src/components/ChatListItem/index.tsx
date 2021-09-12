@@ -7,20 +7,22 @@ import { useNavigation } from '@react-navigation/native';
 import { ChatRoom, User, RootStackParamList } from '../../constants/types';
 
 const ChatListItem: FunctionComponent<ChatRoom> = ({ chatRoom }) => {
-  // const user = chatRoom.users[1];
   const [otherUser, setOtherUser] = useState<User | null>(null);
-  console.log('chatRoom: ', chatRoom);
+  const [myId, setMyId] = useState('');
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
     const getOtherUser = async () => {
       const userInfo = await Auth.currentAuthenticatedUser();
+
       if (chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
         setOtherUser(chatRoom.chatRoomUsers.items[1].user);
       } else {
         setOtherUser(chatRoom.chatRoomUsers.items[0].user);
       }
+      setMyId(userInfo.attributes.sub);
     };
     getOtherUser();
   }, []);
@@ -29,6 +31,7 @@ const ChatListItem: FunctionComponent<ChatRoom> = ({ chatRoom }) => {
     navigation.navigate('ChatRoom', {
       id: chatRoom.id,
       name: otherUser?.name || '',
+      myId,
     });
   };
 
@@ -42,11 +45,11 @@ const ChatListItem: FunctionComponent<ChatRoom> = ({ chatRoom }) => {
         <Image source={{ uri: otherUser.imageUri }} style={styles.avatar} />
         <View style={styles.midContainer}>
           <Text style={styles.userName}>{otherUser.name}</Text>
-          <Text style={styles.lastMessage}>{chatRoom.lastMessage.content}</Text>
+          {/* <Text style={styles.lastMessage}>{chatRoom.lastMessage.content}</Text> */}
         </View>
       </View>
       <Text style={styles.time}>
-        {moment(chatRoom.lastMessage.createdAt).format('DD/MM/YYYY')}
+        {/* {moment(chatRoom.lastMessage.createdAt).format('DD/MM/YYYY')} */}
       </Text>
     </TouchableOpacity>
   );

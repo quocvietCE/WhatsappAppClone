@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { MessageObject } from '../../constants/types';
+import { Message } from '../../constants/types';
 import Colors from '../../constants/Colors';
 import moment from 'moment';
 
-// import styles from './styles';
+export type ChatMessageProps = {
+  message: Message;
+  myId: string;
+};
 
-const ChatMessages = ({ message = MessageObject }) => {
+const ChatMessages: FunctionComponent<ChatMessageProps> = ({
+  message,
+  myId,
+}) => {
   const isMyMessage = () => {
-    return message.user.id === 'u1';
+    return message.user.id === myId;
   };
 
   return (

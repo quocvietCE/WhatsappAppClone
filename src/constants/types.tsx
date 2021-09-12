@@ -5,7 +5,7 @@ export type RootStackParamList = {
   ChatRoom: {
     id: string;
     name: string;
-    myId?: string | undefined;
+    myId: string;
   };
 };
 

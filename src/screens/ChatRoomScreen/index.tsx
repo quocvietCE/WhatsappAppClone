@@ -8,10 +8,8 @@ import {
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { API, graphqlOperation, Auth } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import { messagesByChatRoom } from '../../graphql/queries';
-import { onCreateMessage } from '../../graphql/subscriptions';
-import { getUser } from '../ChatListScreen/queries';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import chatRoomData from '../../constants/Chats';
@@ -33,9 +31,6 @@ const ChatRoomScreen: FunctionComponent<ChatRoomScreenProps> = ({
   const [messages, setMessages] = useState([]);
   const myId = route.params.myId;
   const insets = useSafeAreaInsets();
-
-  
-
   const fetchMessages = async () => {
     const messagesData = await API.graphql(
       graphqlOperation(messagesByChatRoom, {
@@ -43,7 +38,6 @@ const ChatRoomScreen: FunctionComponent<ChatRoomScreenProps> = ({
         sortDirection: 'DESC',
       }),
     );
-
     console.log('FETCH MESSAGES');
     setMessages(messagesData.data.messagesByChatRoom.items);
   };
@@ -62,12 +56,13 @@ const ChatRoomScreen: FunctionComponent<ChatRoomScreenProps> = ({
       source={BG}
       style={[styles.container, { paddingBottom: insets.bottom }]}>
       <FlatList
-        data={chatRoomData.messages}
+        // data={chatRoomData.messages}
+        data={messages}
         keyExtractor={({ id }) => id}
-        renderItem={({ item }) => <ChatMessage message={item} />}
+        renderItem={({ item }) => <ChatMessage message={item} myId={myId} />}
         inverted
       />
-      <InputBox />
+      <InputBox myUserId={myId} chatRoomID={route.params.id} />
     </ImageBackground>
   );
 };

@@ -321,6 +321,10 @@ export const createMessage = /* GraphQL */ `
     }
   }
 `;
+
+// content: message,
+// userID: myUserId,
+// chatRoomID,
 export const updateMessage = /* GraphQL */ `
   mutation UpdateMessage(
     $input: UpdateMessageInput!
