@@ -1,27 +1,47 @@
-import React from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Auth } from 'aws-amplify';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
-import { ChatRoom } from '../../constants/types';
+import { ChatRoom, User, RootStackParamList } from '../../constants/types';
 
-const ChatListItem = ({ chatRoom = ChatRoom }) => {
-  const user = chatRoom.users[1];
+const ChatListItem: FunctionComponent<ChatRoom> = ({ chatRoom }) => {
+  // const user = chatRoom.users[1];
+  const [otherUser, setOtherUser] = useState<User | null>(null);
+  console.log('chatRoom: ', chatRoom);
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
-  const navigation = useNavigation();
+  useEffect(() => {
+    const getOtherUser = async () => {
+      const userInfo = await Auth.currentAuthenticatedUser();
+      if (chatRoom.chatRoomUsers.items[0].user.id === userInfo.attributes.sub) {
+        setOtherUser(chatRoom.chatRoomUsers.items[1].user);
+      } else {
+        setOtherUser(chatRoom.chatRoomUsers.items[0].user);
+      }
+    };
+    getOtherUser();
+  }, []);
 
   const onClick = () => {
     navigation.navigate('ChatRoom', {
       id: chatRoom.id,
-      name: chatRoom.users[1].name,
+      name: otherUser?.name || '',
     });
   };
+
+  if (!otherUser) {
+    return null;
+  }
 
   return (
     <TouchableOpacity style={styles.container} onPress={onClick}>
       <View style={styles.leftContainer}>
-        <Image source={{ uri: user.imageUri }} style={styles.avatar} />
+        <Image source={{ uri: otherUser.imageUri }} style={styles.avatar} />
         <View style={styles.midContainer}>
-          <Text style={styles.userName}>{user.name}</Text>
+          <Text style={styles.userName}>{otherUser.name}</Text>
           <Text style={styles.lastMessage}>{chatRoom.lastMessage.content}</Text>
         </View>
       </View>

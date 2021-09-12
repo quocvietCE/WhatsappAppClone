@@ -6,8 +6,9 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
 } from 'react-native';
-import { User } from '../../constants/types';
+import { User, RootStackParamList } from '../../constants/types';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { API, graphqlOperation, Auth } from 'aws-amplify';
 import { createChatRoom, createChatRoomUser } from '../../graphql/mutations';
@@ -17,7 +18,8 @@ export type ContactListItemProps = {
 };
 
 const ContactListItem: FunctionComponent<ContactListItemProps> = ({ user }) => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackScreenProps<RootStackParamList>>();
 
   const onClick = async () => {
     try {
@@ -59,6 +61,7 @@ const ContactListItem: FunctionComponent<ContactListItemProps> = ({ user }) => {
       navigation.navigate('ChatRoom', {
         id: newChatRoom.id,
         name: 'Hardcoded name',
+        myId: userInfo.attributes.sub,
       });
     } catch (e) {
       console.log(e);

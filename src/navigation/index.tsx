@@ -19,19 +19,14 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Colors from '../constants/Colors';
 
+import { RootStackParamList } from '../constants/types';
+
 FontAwesome.loadFont();
 Octicons.loadFont();
 MaterialCommunityIcons.loadFont();
 MaterialIcons.loadFont();
 
-export type RootStackParamType = {
-  Root: undefined;
-  ChatRoom: undefined;
-  Contacts: undefined;
-  NotFound: undefined;
-};
-
-const RootStack = createNativeStackNavigator<RootStackParamType>();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
 
 const RootRouter = ({ colorScheme }: { colorScheme: ColorSchemeName }) => (
   <NavigationContainer
@@ -81,7 +76,7 @@ const RootRouter = ({ colorScheme }: { colorScheme: ColorSchemeName }) => (
         name="ChatRoom"
         component={ChatRoomScreen}
         options={({ route }) => ({
-          // title: route.params.name,
+          title: route.params.name,
           headerRight: () => (
             <View
               style={{

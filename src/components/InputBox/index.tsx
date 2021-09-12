@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+
+import { API, Auth, graphqlOperation } from 'aws-amplify';
+
+import { createMessage, updateChatRoom } from '../../graphql/mutations';
+
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 import Colors from '../../constants/Colors';
-
-// import styles from './styles';
 
 MaterialCommunityIcons.loadFont();
 MaterialIcons.loadFont();

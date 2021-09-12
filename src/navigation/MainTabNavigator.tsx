@@ -1,29 +1,19 @@
 import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-// import {createStackNavigator} from '@react-navigation/stack';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import Camera from '../screens/CameraScreen';
-import Calls from '../screens/CallsScreen';
-import ChatsScreen from '../screens/ChatsScreen';
+import ChatListScreen from '../screens/ChatListScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-// import Status from '../screens/StatusScreen';
-
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Colors from '../constants/Colors';
-// import { useColorScheme } from 'react-native';
 import useColorScheme from '../hooks/useColorScheme';
 
-import { TabOneParamList, TabTwoParamList } from '../constants/types';
+import {
+  TabOneParamList,
+  TabTwoParamList,
+  TopTabStackParamType,
+} from '../constants/types';
 
 Fontisto.loadFont();
-
-export type TopTabStackParamType = {
-  Camera: undefined;
-  Chats: undefined;
-  Status: undefined;
-  Calls: undefined;
-};
 
 const TopTab = createMaterialTopTabNavigator<TopTabStackParamType>();
 
@@ -32,7 +22,7 @@ const MainTabNavigator = () => {
   console.log('colorScheme: ', colorScheme);
   return (
     <TopTab.Navigator
-      initialRouteName="Chats"
+      initialRouteName="ChatList"
       // screenOptions={{
       //   activeTintColor: Colors[colorScheme].background,
       //   style: {
@@ -71,7 +61,7 @@ const MainTabNavigator = () => {
           tabBarLabel: () => null,
         }}
       />
-      <TopTab.Screen name="Chats" component={ChatsScreen} />
+      <TopTab.Screen name="ChatList" component={ChatListScreen} />
       <TopTab.Screen name="Status" component={TabTwoNavigator} />
       <TopTab.Screen name="Calls" component={TabTwoNavigator} />
     </TopTab.Navigator>
@@ -85,7 +75,7 @@ function TabOneNavigator() {
     <TabOneStack.Navigator>
       <TabOneStack.Screen
         name="TabOneScreen"
-        component={ChatsScreen}
+        component={ChatListScreen}
         options={{ headerTitle: 'Tab One Title' }}
       />
     </TabOneStack.Navigator>
