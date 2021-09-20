@@ -25,11 +25,16 @@ const ChatListScreen: FunctionComponent<ChatListScreenProps> = ({
     const fetchChatRooms = async () => {
       try {
         const userInfo = await Auth.currentAuthenticatedUser();
+        console.log('userInfo: ', userInfo);
         const userData = await API.graphql(
           graphqlOperation(getUser, { id: userInfo.attributes.sub }),
         );
         console.log('userData: ', userData);
-        setChatRooms(userData.data.getUser.chatRoomUser.items);
+        setChatRooms(
+          userData.data.getUser.chatRoomUser.items.filter(
+            (item) => item.chatRoom._deleted !== true,
+          ),
+        );
       } catch (err) {
         console.log('error: ', err);
       }
@@ -40,7 +45,7 @@ const ChatListScreen: FunctionComponent<ChatListScreenProps> = ({
   return (
     <View style={styles.container}>
       <FlatList
-        keyExtractor={(item) => item.chatRoom.id}
+        keyExtractor={(item, index) => `${item.chatRoom.id}-index-${index}`}
         data={chatRooms}
         renderItem={({ item }) => <ChatListItem chatRoom={item.chatRoom} />}
       />

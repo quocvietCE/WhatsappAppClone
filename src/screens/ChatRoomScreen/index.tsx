@@ -30,6 +30,7 @@ const ChatRoomScreen: FunctionComponent<ChatRoomScreenProps> = ({
 }) => {
   const [messages, setMessages] = useState([]);
   const myId = route.params.myId;
+  console.log('ChatRoomScreen route: ', route);
   const insets = useSafeAreaInsets();
   const fetchMessages = async () => {
     const messagesData = await API.graphql(
@@ -38,7 +39,7 @@ const ChatRoomScreen: FunctionComponent<ChatRoomScreenProps> = ({
         sortDirection: 'DESC',
       }),
     );
-    console.log('FETCH MESSAGES');
+    console.log('FETCH MESSAGES: ', messagesData);
     setMessages(messagesData.data.messagesByChatRoom.items);
   };
 

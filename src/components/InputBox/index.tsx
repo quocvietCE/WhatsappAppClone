@@ -41,7 +41,8 @@ const InputBox: FunctionComponent<InputBoxProps> = ({
   console.log('myUserId: ', myUserId);
   const updateChatRoomLastMessage = async (messageId: string) => {
     try {
-      await API.graphql(
+      console.log('updateChatRoomLastMessage messageId: ', messageId);
+      const updateLastMessage = await API.graphql(
         graphqlOperation(updateChatRoom, {
           input: {
             id: chatRoomID,
@@ -49,6 +50,7 @@ const InputBox: FunctionComponent<InputBoxProps> = ({
           },
         }),
       );
+      console.log('updateLastMessage: ', updateLastMessage);
     } catch (e) {
       console.log(e);
     }
@@ -58,7 +60,7 @@ const InputBox: FunctionComponent<InputBoxProps> = ({
     try {
       const inputData = {
         content: message,
-        userID: myUserId || '',
+        userID: myUserId,
         chatRoomID,
       };
       console.log('inputData: ', inputData);

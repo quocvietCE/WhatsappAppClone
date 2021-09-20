@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-
+import { Pressable, StyleSheet } from 'react-native';
+import { API, graphqlOperation, Auth } from 'aws-amplify';
 import EditScreenInfo from '../../components/EditScreenInfo';
 import { Text, View } from '../../components/Themed';
 
@@ -14,6 +14,13 @@ export default function TabTwoScreen() {
         darkColor="rgba(255,255,255,0.1)"
       />
       <EditScreenInfo path="/screens/TabTwoScreen.js" />
+      <Pressable
+        style={styles.singOutBtn}
+        onPress={() => {
+          Auth.signOut();
+        }}>
+        <Text>Sign Out</Text>
+      </Pressable>
     </View>
   );
 }
@@ -32,5 +39,11 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  singOutBtn: {
+    padding: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: 'red',
   },
 });
