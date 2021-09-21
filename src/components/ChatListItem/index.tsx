@@ -63,8 +63,12 @@ const ChatListItem: FunctionComponent<ChatRoom> = ({ chatRoom }) => {
         <Image source={{ uri: otherUser.imageUri }} style={styles.avatar} />
         <View style={styles.midContainer}>
           <Text style={styles.userName}>{otherUser.name}</Text>
-          <Text style={styles.lastMessage}>
-            {chatRoom.lastMessage?.content || ''}
+          <Text style={styles.lastMessage} numberOfLines={2}>
+            {chatRoom.lastMessage
+              ? `${chatRoom.lastMessage?.user?.name || ''}: ${
+                  chatRoom.lastMessage.content
+                }`
+              : ''}
           </Text>
         </View>
       </View>

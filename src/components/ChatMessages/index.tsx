@@ -13,8 +13,8 @@ const ChatMessages: FunctionComponent<ChatMessageProps> = ({
   message,
   myId,
 }) => {
-  console.log('ChatMessages myId: ', myId);
-  console.log('ChatMessages message: ', message);
+  // console.log('ChatMessages myId: ', myId);
+  // console.log('ChatMessages message: ', message);
   const isMyMessage = () => {
     return message.user?.id === myId || true;
   };

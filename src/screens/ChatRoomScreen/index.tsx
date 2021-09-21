@@ -10,6 +10,7 @@ import { RouteProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { API, graphqlOperation } from 'aws-amplify';
 import { messagesByChatRoom } from '../../graphql/queries';
+import { onCreateMessage } from '../../graphql/subscriptions';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import chatRoomData from '../../constants/Chats';
@@ -29,9 +30,11 @@ const ChatRoomScreen: FunctionComponent<ChatRoomScreenProps> = ({
   route,
 }) => {
   const [messages, setMessages] = useState([]);
+
   const myId = route.params.myId;
   console.log('ChatRoomScreen route: ', route);
   const insets = useSafeAreaInsets();
+
   const fetchMessages = async () => {
     const messagesData = await API.graphql(
       graphqlOperation(messagesByChatRoom, {
@@ -50,6 +53,27 @@ const ChatRoomScreen: FunctionComponent<ChatRoomScreenProps> = ({
   useEffect(() => {
     const fetchChatRooms = async () => {};
     fetchChatRooms();
+  }, []);
+
+  useEffect(() => {
+    const subscription = API.graphql(
+      graphqlOperation(onCreateMessage),
+    ).subscribe({
+      next: (data) => {
+        console.log('onCreateMessage data: ', data);
+        const newMessage = data.value.data.onCreateMessage;
+
+        if (newMessage.chatRoomID !== route.params.id) {
+          console.log('Message is in another room!');
+          return;
+        }
+
+        fetchMessages();
+        // setMessages([newMessage, ...messages]);
+      },
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   return (
